@@ -9,7 +9,7 @@ import Product
 fetch : (Result Http.Error (List Product.Product) -> msg) -> Cmd msg
 fetch msg =
     Http.get
-        { url = "https://example.com"
+        { url = "https://api.myjson.com/bins/o6ssi"
         , expect = Http.expectJson msg decode
         }
 
@@ -17,5 +17,5 @@ fetch msg =
 decode : Decode.Decoder (List Product.Product)
 decode =
     Decode.succeed (\results -> Decode.succeed results)
-        |> Pipeline.required "results" (Decode.list Product.decode)
+        |> Pipeline.required "result" (Decode.list Product.decode)
         |> Pipeline.resolve

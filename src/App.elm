@@ -3,36 +3,42 @@ module App exposing (main)
 import Browser
 import Html exposing (Html)
 import Http
+import Product
 import Products
 
 
 type alias Model =
-    { text : String }
+    { products : List Product.Product }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { text = "This is shopping cart" }
+    ( { products = [] }
     , Products.fetch ProductFetched
     )
 
 
 type Msg
     = NoOp
-    | ProductFetched (Result Http.Error Products.Results)
+    | ProductFetched (Result Http.Error (List Product.Product))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        _ ->
+        ProductFetched result ->
+            ( { products = Result.withDefault [] result }
+            , Cmd.none
+            )
+
+        NoOp ->
             ( model, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
 view model =
     { title = "elm-shopping-cart"
-    , body = [ Html.div [] [ Html.text model.text ] ]
+    , body = [ Html.div [] [ Html.text "elm shopping cart" ] ]
     }
 
 
