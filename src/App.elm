@@ -1,6 +1,7 @@
 module App exposing (main)
 
 import Browser
+import Cart
 import Html exposing (Html)
 import Http
 import Product
@@ -8,12 +9,16 @@ import Products
 
 
 type alias Model =
-    { products : List Product.Product }
+    { products : List Product.Product
+    , cart : Cart.Cart
+    }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { products = [] }
+    ( { products = []
+      , cart = Cart.empty
+      }
     , Products.fetch ProductFetched
     )
 
@@ -27,7 +32,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ProductFetched result ->
-            ( { products = Result.withDefault [] result }
+            ( { model | products = Result.withDefault [] result }
             , Cmd.none
             )
 
