@@ -1,7 +1,4 @@
-module Products exposing
-    ( Results
-    , fetch
-    )
+module Products exposing (fetch)
 
 import Http
 import Json.Decode as Decode
@@ -15,10 +12,6 @@ fetch msg =
         { url = "https://example.com"
         , expect = Http.expectJson msg decode
         }
-
-
-type alias Results =
-    { results : List Product.Product }
 
 
 decode : Decode.Decoder (List Product.Product)
