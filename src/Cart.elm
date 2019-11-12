@@ -1,5 +1,6 @@
 module Cart exposing
     ( Cart
+    , add
     , empty
     )
 
@@ -13,3 +14,8 @@ type Cart
 empty : Cart
 empty =
     Cart Set.empty
+
+
+add : String -> Cart -> Cart
+add productId (Cart ids) =
+    Cart (Set.insert productId ids)

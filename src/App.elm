@@ -26,6 +26,7 @@ init _ =
 type Msg
     = NoOp
     | ProductFetched (Result Http.Error (List Product.Product))
+    | AddProductToCart String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -33,6 +34,11 @@ update msg model =
     case msg of
         ProductFetched result ->
             ( { model | products = Result.withDefault [] result }
+            , Cmd.none
+            )
+
+        AddProductToCart id ->
+            ( { model | cart = Cart.add id model.cart }
             , Cmd.none
             )
 
