@@ -8,19 +8,21 @@ import Product
 import Products
 
 
-type alias Model =
+type alias Store =
     { products : List Product.Product
     , cart : Cart.Cart
     }
 
 
+type Model
+    = Loading
+    | Loaded Store
+    | Purchased
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { products = []
-      , cart = Cart.empty
-      }
-    , Products.fetch ProductFetched
-    )
+    ( Loading, Products.fetch ProductFetched )
 
 
 type Msg
@@ -33,14 +35,27 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ProductFetched result ->
-            ( { model | products = Result.withDefault [] result }
-            , Cmd.none
-            )
+            case model of
+                Loading ->
+                    ( Loaded
+                        { products = Result.withDefault [] result
+                        , cart = Cart.empty
+                        }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
         AddProductToCart id ->
-            ( { model | cart = Cart.add id model.cart }
-            , Cmd.none
-            )
+            case model of
+                Loaded store ->
+                    ( Loaded { store | cart = Cart.add id store.cart }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
@@ -49,7 +64,16 @@ update msg model =
 view : Model -> Browser.Document Msg
 view model =
     { title = "elm-shopping-cart"
-    , body = [ Html.div [] [ Html.text "elm shopping cart" ] ]
+    , body =
+        case model of
+            Loading ->
+                [ Html.div [] [ Html.text "Loading" ] ]
+
+            Loaded _ ->
+                [ Html.div [] [ Html.text "elm shopping cart" ] ]
+
+            Purchased ->
+                [ Html.div [] [ Html.text "Purchased" ] ]
     }
 
 
