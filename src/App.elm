@@ -81,7 +81,7 @@ view model =
             Loaded _ ->
                 [ Html.div [] [ Html.text "elm shopping cart" ] ]
 
-            Purchased ->
+            Purchased _ ->
                 [ Html.div [] [ Html.text "Purchased" ] ]
     }
 
