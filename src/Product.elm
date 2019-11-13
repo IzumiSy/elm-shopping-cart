@@ -10,6 +10,7 @@ import Json.Decode.Pipeline as Pipeline
 type alias Product =
     { id : Int
     , name : String
+    , price : Int
     }
 
 
@@ -18,3 +19,4 @@ decode =
     Decode.succeed Product
         |> Pipeline.required "id" Decode.int
         |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "price" Decode.int
