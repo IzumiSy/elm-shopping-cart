@@ -17,7 +17,7 @@ type alias Store =
 type Model
     = Loading
     | Loaded Store
-    | Purchased
+    | Purchased Cart.Cart
 
 
 init : () -> ( Model, Cmd Msg )
@@ -29,6 +29,7 @@ type Msg
     = NoOp
     | ProductFetched (Result Http.Error (List Product.Product))
     | AddProductToCart String
+    | Purchase
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -53,6 +54,14 @@ update msg model =
                     ( Loaded { store | cart = Cart.add id store.cart }
                     , Cmd.none
                     )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        Purchase ->
+            case model of
+                Loaded store ->
+                    ( Purchased store.cart, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
