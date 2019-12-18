@@ -2,7 +2,8 @@ module App exposing (main)
 
 import Browser
 import Cart
-import Html exposing (Html)
+import Html exposing (div, text)
+import Html.Attributes exposing (class)
 import Http
 import Product
 import Products
@@ -76,13 +77,17 @@ view model =
     , body =
         case model of
             Loading ->
-                [ Html.div [] [ Html.text "Loading" ] ]
+                [ div [] [ text "Loading" ] ]
 
-            Loaded _ ->
-                [ Html.div [] [ Html.text "elm shopping cart" ] ]
+            Loaded loadedModel ->
+                [ div [] [ text "elm shopping cart" ]
+                , div
+                    [ class "product-list" ]
+                    (List.map (\product -> div [] [ text product.name ]) loadedModel.products)
+                ]
 
             Purchased _ ->
-                [ Html.div [] [ Html.text "Purchased" ] ]
+                [ div [] [ text "Purchased" ] ]
     }
 
 
