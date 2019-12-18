@@ -9,7 +9,7 @@ import Product
 fetch : (Result Http.Error (List Product.Product) -> msg) -> Cmd msg
 fetch msg =
     Http.get
-        { url = "https://api.myjson.com/bins/o6ssi"
+        { url = "https://api.myjson.com/bins/180pq4"
         , expect = Http.expectJson msg decode
         }
 
