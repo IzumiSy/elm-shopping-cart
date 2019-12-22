@@ -101,6 +101,7 @@ view model =
                 , button
                     [ onClick Purchase ]
                     [ text "purchase" ]
+                , Cart.view loadedModel.cart
                 ]
 
             Purchased _ ->
