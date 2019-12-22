@@ -2,8 +2,9 @@ module App exposing (main)
 
 import Browser
 import Cart
-import Html exposing (div, text)
+import Html exposing (button, div, text)
 import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
 import Http
 import Product
 import Products
@@ -29,7 +30,7 @@ init _ =
 type Msg
     = NoOp
     | ProductFetched (Result Http.Error (List Product.Product))
-    | AddProductToCart String
+    | AddProductToCart Int
     | Purchase
 
 
@@ -80,10 +81,26 @@ view model =
                 [ div [] [ text "Loading" ] ]
 
             Loaded loadedModel ->
-                [ div [] [ text "elm shopping cart" ]
+                [ div
+                    []
+                    [ text "elm shopping cart" ]
                 , div
                     [ class "product-list" ]
-                    (List.map (\product -> div [] [ text product.name ]) loadedModel.products)
+                    (List.map
+                        (\product ->
+                            div
+                                []
+                                [ text product.name
+                                , button
+                                    [ onClick (AddProductToCart product.id) ]
+                                    [ text "Add" ]
+                                ]
+                        )
+                        loadedModel.products
+                    )
+                , button
+                    [ onClick Purchase ]
+                    [ text "purchase" ]
                 ]
 
             Purchased _ ->
