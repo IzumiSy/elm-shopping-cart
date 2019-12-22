@@ -3,15 +3,13 @@ module App exposing (main)
 import Browser
 import Cart
 import Html exposing (button, div, text)
-import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Http
-import Product
 import Products
 
 
 type alias Store =
-    { products : List Product.Product
+    { products : Products.Products
     , cart : Cart.Cart
     }
 
@@ -29,7 +27,7 @@ init _ =
 
 type Msg
     = NoOp
-    | ProductFetched (Result Http.Error (List Product.Product))
+    | ProductFetched (Result Http.Error Products.Products)
     | AddProductToCart Int
     | Purchase
 
@@ -37,11 +35,11 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ProductFetched result ->
+        ProductFetched products ->
             case model of
                 Loading ->
                     ( Loaded
-                        { products = Result.withDefault [] result
+                        { products = Result.withDefault Products.empty products
                         , cart = Cart.empty
                         }
                     , Cmd.none
@@ -74,34 +72,16 @@ update msg model =
 
 view : Model -> Browser.Document Msg
 view model =
-    { title = "elm-shopping-cart"
+    { title = "ECサイト"
     , body =
         case model of
             Loading ->
                 [ div [] [ text "Loading" ] ]
 
-            Loaded loadedModel ->
-                [ div
-                    []
-                    [ text "elm shopping cart" ]
-                , div
-                    [ class "product-list" ]
-                    (List.map
-                        (\product ->
-                            div
-                                []
-                                [ text product.name
-                                , button
-                                    [ onClick (AddProductToCart product.id) ]
-                                    [ text "Add" ]
-                                ]
-                        )
-                        loadedModel.products
-                    )
-                , button
-                    [ onClick Purchase ]
-                    [ text "purchase" ]
-                , Cart.view loadedModel.cart
+            Loaded loaded ->
+                [ Products.view AddProductToCart loaded.products
+                , button [ onClick Purchase ] [ text "購入" ]
+                , Cart.view loaded.cart
                 ]
 
             Purchased _ ->

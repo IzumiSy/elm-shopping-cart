@@ -35,4 +35,4 @@ view (Cart cart) =
                 |> List.map String.fromInt
                 |> String.join ","
     in
-    div [] [ text ("Cart: " ++ ids) ]
+    div [] [ text ("現在のカート: " ++ ids) ]
