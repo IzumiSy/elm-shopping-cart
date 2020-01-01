@@ -5,7 +5,8 @@ module Products exposing
     , view
     )
 
-import Html exposing (Html, button, div, text)
+import Html exposing (Html, button, div, img, text)
+import Html.Attributes exposing (height, src, width)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode
@@ -16,6 +17,7 @@ type alias Product =
     { id : Int
     , name : String
     , price : Int
+    , imageUrl : String
     }
 
 
@@ -40,10 +42,16 @@ view : (Int -> msg) -> Products -> Html msg
 view onAddMsg (Products products) =
     div []
         (List.map
-            (\{ name, id } ->
+            (\{ name, id, imageUrl } ->
                 div
                     []
-                    [ text name
+                    [ img
+                        [ src imageUrl
+                        , width 170
+                        , height 170
+                        ]
+                        []
+                    , text name
                     , button
                         [ onClick (onAddMsg id) ]
                         [ text "追加" ]
@@ -70,3 +78,4 @@ decodeProduct =
         |> Pipeline.required "id" Decode.int
         |> Pipeline.required "name" Decode.string
         |> Pipeline.required "price" Decode.int
+        |> Pipeline.required "image_url" Decode.string
