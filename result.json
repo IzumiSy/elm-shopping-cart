@@ -3,16 +3,19 @@
     {
       "id": 1,
       "name": "いい椅子",
+      "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 200
     },
     {
       "id": 2,
       "name": "いい机",
+      "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 300
     },
     {
       "id": 3,
       "name": "ナイスなテーブル",
+      "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 400
     }
   ]
