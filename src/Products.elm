@@ -33,7 +33,7 @@ empty =
 fetch : (Result Http.Error Products -> msg) -> Cmd msg
 fetch msg =
     Http.get
-        { url = "https://api.myjson.com/bins/14aydc"
+        { url = "https://api.myjson.com/bins/dx2ds"
         , expect = Http.expectJson msg decode
         }
 

@@ -47,6 +47,12 @@
       "name": "すばらしいテーブル",
       "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 200
+    },
+    {
+      "id": 10,
+      "name": "ものすごいテーブル",
+      "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
+      "price": 200
     }
   ]
 }
