@@ -1,0 +1,59 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.contents {
+  width: 1000px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+.contents > .title {
+  margin-bottom: 25px;
+}
+
+.product {
+  display: inline-block;
+  height: 350px;
+  width: 280px;
+  text-align: center;
+  border: gainsboro solid 1px;
+  border-radius: 5px;
+  margin: 0 15px 20px 20px;
+  position: relative;
+}
+
+.product > .background {
+  background: gainsboro;
+  height: 180px;
+  padding-top: 25px;
+}
+
+.product > .name {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.products {
+  padding-top: 15px;
+  text-align: center;
+}
+
+.actions {
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+  left: 0;
+}
+
+button.add {
+  color: white;
+  border-color: transparent;
+  border-radius: 5px;
+  background-color: #269edc;
+  width: 150px;
+  height: 35px;
+  font-size: 15px;
+}

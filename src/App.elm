@@ -2,7 +2,8 @@ module App exposing (main)
 
 import Browser
 import Cart
-import Html exposing (button, div, text)
+import Html exposing (button, div, h1, text)
+import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Http
 import Products
@@ -79,9 +80,18 @@ view model =
                 [ div [] [ text "Loading" ] ]
 
             Loaded loaded ->
-                [ Products.view AddProductToCart loaded.products
-                , button [ onClick Purchase ] [ text "購入" ]
-                , Cart.view loaded.cart
+                [ div
+                    [ class "contents" ]
+                    [ h1
+                        [ class "title" ]
+                        [ text "商品一覧" ]
+                    , Products.view AddProductToCart loaded.products
+                    , div
+                        [ class "section cart" ]
+                        [ button [ onClick Purchase ] [ text "購入" ]
+                        , Cart.view loaded.cart
+                        ]
+                    ]
                 ]
 
             Purchased _ ->

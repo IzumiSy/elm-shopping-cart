@@ -6,7 +6,7 @@ module Products exposing
     )
 
 import Html exposing (Html, button, div, img, text)
-import Html.Attributes exposing (height, src, width)
+import Html.Attributes exposing (class, height, src, width)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode
@@ -40,21 +40,35 @@ fetch msg =
 
 view : (Int -> msg) -> Products -> Html msg
 view onAddMsg (Products products) =
-    div []
+    div [ class "section products" ]
         (List.map
-            (\{ name, id, imageUrl } ->
+            (\{ name, id, imageUrl, price } ->
                 div
-                    []
-                    [ img
-                        [ src imageUrl
-                        , width 170
-                        , height 170
+                    [ class "product" ]
+                    [ div
+                        [ class "background" ]
+                        [ img
+                            [ src imageUrl
+                            , width 150
+                            , height 150
+                            , class "image"
+                            ]
+                            []
                         ]
-                        []
-                    , text name
-                    , button
-                        [ onClick (onAddMsg id) ]
-                        [ text "追加" ]
+                    , div
+                        [ class "name" ]
+                        [ text name ]
+                    , div
+                        [ class "price" ]
+                        [ text ("¥" ++ String.fromInt price) ]
+                    , div
+                        [ class "actions" ]
+                        [ button
+                            [ class "add"
+                            , onClick (onAddMsg id)
+                            ]
+                            [ text "追加" ]
+                        ]
                     ]
             )
             products
