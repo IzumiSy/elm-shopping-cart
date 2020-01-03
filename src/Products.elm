@@ -6,7 +6,7 @@ module Products exposing
     )
 
 import Html exposing (Html, button, div, img, text)
-import Html.Attributes exposing (class, height, src, width)
+import Html.Attributes exposing (class, src)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode
