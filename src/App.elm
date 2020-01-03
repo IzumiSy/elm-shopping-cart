@@ -76,7 +76,7 @@ view model =
     , body =
         case model of
             Loading ->
-                [ div [] [ text "Loading" ] ]
+                [ div [] [ text "Loading..." ] ]
 
             Loaded loaded ->
                 [ div
@@ -93,7 +93,7 @@ view model =
                 ]
 
             Purchased _ ->
-                [ div [] [ text "Purchased" ] ]
+                [ div [] [ text "購入しました!" ] ]
     }
 
 
