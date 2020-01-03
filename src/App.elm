@@ -27,7 +27,7 @@ init _ =
 
 type Msg
     = ProductFetched (Result Http.Error Products.Products)
-    | AddProductToCart Int
+    | AddProductToCart String
     | Purchase
 
 

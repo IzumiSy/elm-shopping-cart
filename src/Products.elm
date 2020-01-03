@@ -14,7 +14,7 @@ import Json.Decode.Pipeline as Pipeline
 
 
 type alias Product =
-    { id : Int
+    { id : String
     , name : String
     , price : Int
     , imageUrl : String
@@ -33,12 +33,12 @@ empty =
 fetch : (Result Http.Error Products -> msg) -> Cmd msg
 fetch msg =
     Http.get
-        { url = "https://api.myjson.com/bins/dx2ds"
+        { url = "https://api.myjson.com/bins/pzugs"
         , expect = Http.expectJson msg decode
         }
 
 
-view : (Int -> msg) -> Products -> Html msg
+view : (String -> msg) -> Products -> Html msg
 view onAddMsg (Products products) =
     div [ class "section products" ]
         (List.map
@@ -55,7 +55,7 @@ view onAddMsg (Products products) =
                         ]
                     , div
                         [ class "name" ]
-                        [ text (String.concat [ "#", String.fromInt id, " ", name ]) ]
+                        [ text (String.concat [ "#", id, " ", name ]) ]
                     , div
                         [ class "price" ]
                         [ text ("¥" ++ String.fromInt price) ]
@@ -87,7 +87,7 @@ decode =
 decodeProduct : Decode.Decoder Product
 decodeProduct =
     Decode.succeed Product
-        |> Pipeline.required "id" Decode.int
+        |> Pipeline.required "id" Decode.string
         |> Pipeline.required "name" Decode.string
         |> Pipeline.required "price" Decode.int
         |> Pipeline.required "image_url" Decode.string

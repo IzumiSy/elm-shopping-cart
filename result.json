@@ -1,55 +1,55 @@
 {
   "result": [
     {
-      "id": 1,
+      "id": "1",
       "name": "いい椅子",
       "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 200
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "いい机",
       "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 300
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "ナイスなテーブル",
       "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 400
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "すげーテーブル",
       "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 250
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "やべーテーブル",
       "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 350
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "なんともいえないテーブル",
       "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 450
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "ものものしいテーブル",
       "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 700
     },
     {
-      "id": 9,
+      "id": "9",
       "name": "すばらしいテーブル",
       "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 200
     },
     {
-      "id": 10,
+      "id": "10",
       "name": "ものすごいテーブル",
       "image_url": "https://raw.githubusercontent.com/github/explore/bc74dc5f9d530003dcd057b7b73c12fbcc4484ed/topics/elm/elm.png",
       "price": 200

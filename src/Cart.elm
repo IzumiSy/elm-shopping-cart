@@ -15,7 +15,7 @@ import Set
 
 
 type Cart
-    = Cart (Set.Set Int)
+    = Cart (Set.Set String)
 
 
 empty : Cart
@@ -23,7 +23,7 @@ empty =
     Cart Set.empty
 
 
-add : Int -> Cart -> Cart
+add : String -> Cart -> Cart
 add productId (Cart ids) =
     Cart (Set.insert productId ids)
 
@@ -34,7 +34,7 @@ view onPurchaseMsg (Cart cart) =
         ids =
             cart
                 |> Set.toList
-                |> List.map String.fromInt
+                |> List.map ((++) "#")
                 |> String.join ","
     in
     div
