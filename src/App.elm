@@ -26,8 +26,7 @@ init _ =
 
 
 type Msg
-    = NoOp
-    | ProductFetched (Result Http.Error Products.Products)
+    = ProductFetched (Result Http.Error Products.Products)
     | AddProductToCart Int
     | Purchase
 
@@ -65,9 +64,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
-        NoOp ->
-            ( model, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
