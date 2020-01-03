@@ -49,8 +49,6 @@ view onAddMsg (Products products) =
                         [ class "background" ]
                         [ img
                             [ src imageUrl
-                            , width 150
-                            , height 150
                             , class "image"
                             ]
                             []
