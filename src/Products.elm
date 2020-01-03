@@ -57,7 +57,7 @@ view onAddMsg (Products products) =
                         ]
                     , div
                         [ class "name" ]
-                        [ text name ]
+                        [ text (String.concat [ "#", String.fromInt id, " ", name ]) ]
                     , div
                         [ class "price" ]
                         [ text ("¥" ++ String.fromInt price) ]
