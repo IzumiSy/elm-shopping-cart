@@ -88,7 +88,19 @@ button {
     font-size: 20px;
   }
 
+  .seperator {
+    border-bottom: lightgrey solid 1px;
+  }
+
+  .block {
+    margin: 10px 0;
+
+    .value {
+      float: right;
+    }
+  }
+
   .actions > .purchase {
-    margin-top: 15px;
+    width: 100%;
   }
 }

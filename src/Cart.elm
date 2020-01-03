@@ -8,7 +8,7 @@ module Cart exposing
 -- カートの状態を表現するモジュール
 -- 現状複数の商品をカートにいれることができない
 
-import Html exposing (Html, button, div, h2, text)
+import Html exposing (Html, button, div, h2, span, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Set
@@ -43,17 +43,44 @@ view onPurchaseMsg (Cart cart) =
             [ class "title" ]
             [ text "現在のカート" ]
         , div
-            [ class "products" ]
-            [ text ("選択された商品: " ++ ids) ]
+            [ class "block selection" ]
+            [ div
+                []
+                [ text "選択された商品:" ]
+            , div
+                []
+                [ text ids ]
+            ]
         , div
-            [ class "shipping" ]
-            [ text "送料: ¥500" ]
+            [ class "seperator" ]
+            []
         , div
-            [ class "tax" ]
-            [ text "税: ¥20" ]
+            [ class "block shipping" ]
+            [ span
+                [ class "label" ]
+                [ text "送料:" ]
+            , span
+                [ class "value" ]
+                [ text "¥500" ]
+            ]
         , div
-            [ class "total" ]
-            [ text "合計: ¥220" ]
+            [ class "block tax" ]
+            [ span
+                [ class "label" ]
+                [ text "税:" ]
+            , span
+                [ class "value" ]
+                [ text "¥20" ]
+            ]
+        , div
+            [ class "block total" ]
+            [ span
+                [ class "label" ]
+                [ text "合計:" ]
+            , span
+                [ class "value" ]
+                [ text "¥220" ]
+            ]
         , div
             [ class "actions" ]
             [ button
