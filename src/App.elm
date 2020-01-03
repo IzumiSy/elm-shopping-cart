@@ -84,7 +84,7 @@ view model =
                 , div
                     [ class "contents" ]
                     [ Products.view AddProductToCart loaded.products
-                    , Cart.view Purchase loaded.cart
+                    , Cart.view Purchase loaded.products loaded.cart
                     ]
                 ]
 

@@ -1,7 +1,9 @@
 module Products exposing
-    ( Products
+    ( Product
+    , Products
     , empty
     , fetch
+    , getByIdSet
     , view
     )
 
@@ -11,6 +13,7 @@ import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode
 import Json.Decode.Pipeline as Pipeline
+import Set
 
 
 type alias Product =
@@ -28,6 +31,11 @@ type Products
 empty : Products
 empty =
     Products []
+
+
+getByIdSet : Set.Set String -> Products -> List Product
+getByIdSet ids (Products products) =
+    List.filter (\{ id } -> Set.member id ids) products
 
 
 fetch : (Result Http.Error Products -> msg) -> Cmd msg

@@ -11,6 +11,7 @@ module Cart exposing
 import Html exposing (Html, button, div, h2, span, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
+import Products
 import Set
 
 
@@ -28,14 +29,13 @@ add productId (Cart ids) =
     Cart (Set.insert productId ids)
 
 
-view : msg -> Cart -> Html msg
-view onPurchaseMsg (Cart cart) =
+view : msg -> Products.Products -> Cart -> Html msg
+view onPurchaseMsg products cart =
     let
-        ids =
-            cart
-                |> Set.toList
-                |> List.map ((++) "#")
-                |> String.join ","
+        tax =
+            totalTax products cart
+        total =
+             tax + subTotal products cart
     in
     div
         [ class "section cart" ]
@@ -44,13 +44,7 @@ view onPurchaseMsg (Cart cart) =
             [ text "現在のカート" ]
         , div
             [ class "block selection" ]
-            [ div
-                []
-                [ text "選択された商品:" ]
-            , div
-                []
-                [ text ids ]
-            ]
+            [ div [] (viewProductNames products cart) ]
         , div
             [ class "seperator" ]
             []
@@ -61,7 +55,7 @@ view onPurchaseMsg (Cart cart) =
                 [ text "送料:" ]
             , span
                 [ class "value" ]
-                [ text "¥500" ]
+                [ text "¥0" ]
             ]
         , div
             [ class "block tax" ]
@@ -70,7 +64,7 @@ view onPurchaseMsg (Cart cart) =
                 [ text "税:" ]
             , span
                 [ class "value" ]
-                [ text "¥20" ]
+                [ text (String.concat [ "¥", String.fromInt tax ]) ]
             ]
         , div
             [ class "block total" ]
@@ -79,7 +73,7 @@ view onPurchaseMsg (Cart cart) =
                 [ text "合計:" ]
             , span
                 [ class "value" ]
-                [ text "¥220" ]
+                [ text (String.concat [ "¥", String.fromInt total ]) ]
             ]
         , div
             [ class "actions" ]
@@ -90,3 +84,28 @@ view onPurchaseMsg (Cart cart) =
                 [ text "購入" ]
             ]
         ]
+
+
+
+-- Internals
+
+
+viewProductNames : Products.Products -> Cart -> List (Html msg)
+viewProductNames products (Cart cart) =
+    products
+        |> Products.getByIdSet cart
+        |> List.map (\{ name, id } -> div [] [ text (String.concat [ "#", id, " ", name ]) ])
+
+
+totalTax : Products.Products -> Cart -> Int
+totalTax products (Cart cart) =
+    products
+        |> Products.getByIdSet cart
+        |> List.foldl (\{ price } acc -> acc + truncate (toFloat price * 0.08)) 0
+
+
+subTotal : Products.Products -> Cart -> Int
+subTotal products (Cart cart) =
+    products
+        |> Products.getByIdSet cart
+        |> List.foldl (\{ price } acc -> acc + price) 0
