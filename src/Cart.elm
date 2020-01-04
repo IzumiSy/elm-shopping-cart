@@ -6,7 +6,7 @@ module Cart exposing
     )
 
 -- カートの状態を表現するモジュール
--- 現状複数の商品をカートにいれることができない
+-- 送料や税額計算などのビジネスルールを凝集
 
 import Html exposing (Html, button, div, h2, span, text)
 import Html.Attributes exposing (class)

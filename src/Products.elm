@@ -7,6 +7,8 @@ module Products exposing
     , view
     )
 
+-- 商品の一覧に関する処理を表現するモジュール
+
 import Html exposing (Html, button, div, img, text)
 import Html.Attributes exposing (class, src)
 import Html.Events exposing (onClick)
