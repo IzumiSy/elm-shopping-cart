@@ -32,10 +32,17 @@ add productId (Cart ids) =
 view : msg -> Products.Products -> Cart -> Html msg
 view onPurchaseMsg products cart =
     let
-        tax =
-            totalTax products cart
+        taxes =
+            totalTaxes products cart
+
+        shipping =
+            totalShipping products cart
+
+        subTotal_ =
+            subTotal products cart
+
         total =
-             tax + subTotal products cart
+            subTotal_ + shipping + taxes
     in
     div
         [ class "section cart" ]
@@ -49,13 +56,22 @@ view onPurchaseMsg products cart =
             [ class "seperator" ]
             []
         , div
+            [ class "block subtotal" ]
+            [ span
+                [ class "label" ]
+                [ text "小計:" ]
+            , span
+                [ class "value" ]
+                [ text (String.concat [ "¥", String.fromInt subTotal_ ]) ]
+            ]
+        , div
             [ class "block shipping" ]
             [ span
                 [ class "label" ]
                 [ text "送料:" ]
             , span
                 [ class "value" ]
-                [ text "¥0" ]
+                [ text (String.concat [ "¥", String.fromInt shipping ]) ]
             ]
         , div
             [ class "block tax" ]
@@ -64,7 +80,7 @@ view onPurchaseMsg products cart =
                 [ text "税:" ]
             , span
                 [ class "value" ]
-                [ text (String.concat [ "¥", String.fromInt tax ]) ]
+                [ text (String.concat [ "¥", String.fromInt taxes ]) ]
             ]
         , div
             [ class "block total" ]
@@ -90,6 +106,8 @@ view onPurchaseMsg products cart =
 -- Internals
 
 
+{-| 現在選択されている商品一覧をdivのリストにする
+-}
 viewProductNames : Products.Products -> Cart -> List (Html msg)
 viewProductNames products (Cart cart) =
     products
@@ -97,15 +115,34 @@ viewProductNames products (Cart cart) =
         |> List.map (\{ name, id } -> div [] [ text (String.concat [ "#", id, " ", name ]) ])
 
 
-totalTax : Products.Products -> Cart -> Int
-totalTax products (Cart cart) =
+{-| 合計の税額を計算する
+-}
+totalTaxes : Products.Products -> Cart -> Int
+totalTaxes products (Cart cart) =
     products
         |> Products.getByIdSet cart
         |> List.foldl (\{ price } acc -> acc + truncate (toFloat price * 0.08)) 0
 
 
+{-| 税と配送料を抜いた小計を計算する
+-}
 subTotal : Products.Products -> Cart -> Int
 subTotal products (Cart cart) =
     products
         |> Products.getByIdSet cart
         |> List.foldl (\{ price } acc -> acc + price) 0
+
+
+{-| 送料を計算する。1500円を上限配送料とする。
+-}
+totalShipping : Products.Products -> Cart -> Int
+totalShipping products cart =
+    let
+        price =
+            ceiling (toFloat (subTotal products cart) / 500) * 500
+    in
+    if price < 1500 then
+        price
+
+    else
+        1500
