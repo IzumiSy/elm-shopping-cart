@@ -8,6 +8,10 @@ import Http
 import Products
 
 
+
+-- model
+
+
 type alias Store =
     { products : Products.Products
     , cart : Cart.Cart
@@ -29,6 +33,10 @@ type Msg
     = ProductFetched (Result Http.Error Products.Products)
     | AddProductToCart String
     | Purchase
+
+
+
+-- update
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -66,6 +74,10 @@ update msg model =
                     ( model, Cmd.none )
 
 
+
+-- view
+
+
 view : Model -> Browser.Document Msg
 view model =
     { title = "ECサイト"
@@ -91,6 +103,10 @@ view model =
             Purchased _ ->
                 [ div [] [ text "購入しました!" ] ]
     }
+
+
+
+-- main
 
 
 main : Program () Model Msg

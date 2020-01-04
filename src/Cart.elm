@@ -15,6 +15,10 @@ import Products
 import Set
 
 
+
+-- model
+
+
 type alias ProductIds =
     Set.Set String
 
@@ -62,6 +66,10 @@ add productId products (Cart cart) =
         , subTotal = subTotal_
         , total = subTotal_ + shipping + taxes
         }
+
+
+
+-- view
 
 
 view : msg -> Products.Products -> Cart -> Html msg
@@ -125,7 +133,7 @@ view onPurchaseMsg products (Cart cart) =
 
 
 
--- Internals
+-- internals
 
 
 {-| 現在選択されている商品一覧をdivのリストにする

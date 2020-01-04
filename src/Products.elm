@@ -18,6 +18,10 @@ import Json.Decode.Pipeline as Pipeline
 import Set
 
 
+
+-- model
+
+
 type alias Product =
     { id : String
     , name : String
@@ -46,6 +50,10 @@ fetch msg =
         { url = "https://api.myjson.com/bins/pzugs"
         , expect = Http.expectJson msg decode
         }
+
+
+
+-- view
 
 
 view : (String -> msg) -> Products -> Html msg
@@ -84,7 +92,7 @@ view onAddMsg (Products products) =
 
 
 
--- Internals
+-- internals
 
 
 decode : Decode.Decoder Products
