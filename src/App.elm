@@ -49,8 +49,8 @@ update msg model =
 
         AddProductToCart id ->
             case model of
-                Loaded store ->
-                    ( Loaded { store | cart = Cart.add id store.cart }
+                Loaded loaded ->
+                    ( Loaded { loaded | cart = Cart.add id loaded.products loaded.cart }
                     , Cmd.none
                     )
 
