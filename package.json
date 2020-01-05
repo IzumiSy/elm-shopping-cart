@@ -1,5 +1,5 @@
 {
-  "name": "elm-engineer-hub",
+  "name": "elm-shopping-cart",
   "private": true,
   "scripts": {
     "start": "parcel src/index.html",
