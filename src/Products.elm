@@ -58,37 +58,40 @@ fetch msg =
 
 view : (String -> msg) -> Products -> Html msg
 view onAddMsg (Products products) =
-    div [ class "section products" ]
-        (List.map
-            (\{ name, id, imageUrl, price } ->
-                div
-                    [ class "product" ]
-                    [ div
-                        [ class "background" ]
-                        [ img
-                            [ src imageUrl
-                            , class "image"
-                            ]
-                            []
-                        ]
-                    , div
-                        [ class "name" ]
-                        [ text (String.concat [ "#", id, " ", name ]) ]
-                    , div
-                        [ class "price" ]
-                        [ text ("¥" ++ String.fromInt price) ]
-                    , div
-                        [ class "actions" ]
-                        [ button
-                            [ class "add"
-                            , onClick (onAddMsg id)
-                            ]
-                            [ text "追加" ]
-                        ]
-                    ]
-            )
-            products
-        )
+    div
+        [ class "section products" ]
+        (List.map (viewProduct onAddMsg) products)
+
+
+viewProduct : (String -> msg) -> Product -> Html msg
+viewProduct onAddMsg { name, id, imageUrl, price } =
+    div
+        [ class "product" ]
+        [ div
+            [ class "background" ]
+            [ img
+                [ src imageUrl
+                , class "image"
+                ]
+                []
+            ]
+        , div
+            [ class "name" ]
+            [ text (String.concat [ "#", id, " ", name ])
+            ]
+        , div
+            [ class "price" ]
+            [ text ("¥" ++ String.fromInt price)
+            ]
+        , div
+            [ class "actions" ]
+            [ button
+                [ class "add"
+                , onClick (onAddMsg id)
+                ]
+                [ text "追加" ]
+            ]
+        ]
 
 
 
