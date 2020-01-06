@@ -29,14 +29,14 @@ init _ =
     ( Loading, Products.fetch ProductFetched )
 
 
+
+-- update
+
+
 type Msg
     = ProductFetched (Result Http.Error Products.Products)
     | AddProductToCart String
     | Purchase
-
-
-
--- update
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
