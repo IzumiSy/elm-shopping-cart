@@ -22,16 +22,16 @@ import Set
 -- model
 
 
+type Products
+    = Products (List Product)
+
+
 type alias Product =
     { id : String
     , name : String
     , price : Int
     , imageUrl : String
     }
-
-
-type Products
-    = Products (List Product)
 
 
 empty : Products
