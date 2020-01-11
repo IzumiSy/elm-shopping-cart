@@ -52,26 +52,27 @@ update msg model =
                     , Cmd.none
                     )
 
-                _ ->
+                Loaded _ ->
+                    ( model, Cmd.none )
+
+                Purchased _ ->
                     ( model, Cmd.none )
 
         AddProductToCart id ->
             case model of
+                Loading ->
+                    ( model, Cmd.none )
+
                 Loaded loaded ->
                     ( Loaded { loaded | cart = Cart.add id loaded.products loaded.cart }
                     , Cmd.none
                     )
 
-                _ ->
+                Purchased _ ->
                     ( model, Cmd.none )
 
         Purchase ->
-            case model of
-                Loaded store ->
-                    ( Purchased store.cart, Cmd.none )
-
-                _ ->
-                    ( model, Cmd.none )
+            ( model, Cmd.none )
 
 
 
