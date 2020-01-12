@@ -107,5 +107,9 @@ button {
 
   .actions > .purchase {
     width: 100%;
+
+    &:disabled {
+      background: lightgrey;
+    }
   }
 }

@@ -9,7 +9,7 @@ module Cart exposing
 -- 送料や税額計算などのビジネスルールを凝集
 
 import Html exposing (Html, button, div, h2, span, text)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, disabled)
 import Html.Events exposing (onClick)
 import Products
 import Set
@@ -126,6 +126,7 @@ view onPurchaseMsg products (Cart cart) =
             [ button
                 [ class "purchase"
                 , onClick onPurchaseMsg
+                , disabled (Set.isEmpty cart.productIds)
                 ]
                 [ text "購入" ]
             ]
