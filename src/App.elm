@@ -2,8 +2,9 @@ module App exposing (main)
 
 import Browser
 import Cart
-import Html exposing (div, h1, text)
+import Html exposing (button, div, h1, text)
 import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
 import Http
 import Products
 
@@ -21,7 +22,7 @@ type alias Store =
 type Model
     = Loading
     | Loaded Store
-    | Purchased Cart.Cart
+    | Purchased
 
 
 init : () -> ( Model, Cmd Msg )
@@ -37,6 +38,7 @@ type Msg
     = ProductFetched (Result Http.Error Products.Products)
     | AddProductToCart String
     | Purchase
+    | BackToProducts
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -55,7 +57,7 @@ update msg model =
                 Loaded _ ->
                     ( model, Cmd.none )
 
-                Purchased _ ->
+                Purchased ->
                     ( model, Cmd.none )
 
         AddProductToCart id ->
@@ -68,11 +70,22 @@ update msg model =
                     , Cmd.none
                     )
 
-                Purchased _ ->
+                Purchased ->
                     ( model, Cmd.none )
 
         Purchase ->
-            ( model, Cmd.none )
+            case model of
+                Loading ->
+                    ( model, Cmd.none )
+
+                Loaded _ ->
+                    ( Purchased, Cmd.none )
+
+                Purchased ->
+                    ( model, Cmd.none )
+
+        BackToProducts ->
+            init ()
 
 
 
@@ -101,8 +114,22 @@ view model =
                     ]
                 ]
 
-            Purchased _ ->
-                [ div [] [ text "購入しました!" ] ]
+            Purchased ->
+                [ div
+                    [ class "contents purchased" ]
+                    [ div
+                        [ class "container" ]
+                        [ div
+                            [ class "title" ]
+                            [ text "Thank You!" ]
+                        , button
+                            [ class "back"
+                            , onClick BackToProducts
+                            ]
+                            [ text "商品一覧へもどる" ]
+                        ]
+                    ]
+                ]
     }
 
 
