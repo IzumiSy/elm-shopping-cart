@@ -13,15 +13,12 @@ import Products
 -- model
 
 
-type alias Store =
-    { products : Products.Products
-    , cart : Cart.Cart
-    }
-
-
 type Model
     = Loading
-    | Loaded Store
+    | Loaded
+        { products : Products.Products
+        , cart : Cart.Cart
+        }
     | Purchased
 
 
