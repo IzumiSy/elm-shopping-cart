@@ -21,7 +21,8 @@ type alias Session =
 
 type Model
     = Loading
-    | Loaded Session
+    | LoadedProducts Products.Products
+    | LoadedAll Session
     | Purchased Session
 
 
@@ -39,6 +40,8 @@ type Msg
     | AddProductToCart String
     | Purchase
     | BackToProducts
+    | CartLoaded Cart.Cart
+    | CartLoadingFailed
 
 
 update : Msg -> Model -> ( Model, Cmd msg )
@@ -47,14 +50,14 @@ update msg model =
         ProductFetched products ->
             case model of
                 Loading ->
-                    ( Loaded
-                        { products = Result.withDefault Products.empty products
-                        , cart = Cart.empty
-                        }
-                    , Cmd.none
+                    ( LoadedProducts (Result.withDefault Products.empty products)
+                    , Cart.load
                     )
 
-                Loaded _ ->
+                LoadedProducts _ ->
+                    ( model, Cmd.none )
+
+                LoadedAll _ ->
                     ( model, Cmd.none )
 
                 Purchased _ ->
@@ -65,12 +68,16 @@ update msg model =
                 Loading ->
                     ( model, Cmd.none )
 
-                Loaded session ->
-                    ( Loaded
-                        { session
-                            | cart = Cart.add id session.products session.cart
-                        }
-                    , Cmd.none
+                LoadedProducts _ ->
+                    ( model, Cmd.none )
+
+                LoadedAll session ->
+                    let
+                        ( nextCart, cmd ) =
+                            Cart.add id session.products session.cart
+                    in
+                    ( LoadedAll { session | cart = nextCart }
+                    , cmd
                     )
 
                 Purchased _ ->
@@ -81,7 +88,10 @@ update msg model =
                 Loading ->
                     ( model, Cmd.none )
 
-                Loaded session ->
+                LoadedProducts _ ->
+                    ( model, Cmd.none )
+
+                LoadedAll session ->
                     ( Purchased session, Cmd.none )
 
                 Purchased _ ->
@@ -92,16 +102,85 @@ update msg model =
                 Loading ->
                     ( model, Cmd.none )
 
-                Loaded _ ->
+                LoadedProducts _ ->
+                    ( model, Cmd.none )
+
+                LoadedAll _ ->
                     ( model, Cmd.none )
 
                 Purchased { products } ->
-                    ( Loaded
+                    let
+                        ( emptyCart, cmd ) =
+                            Cart.empty
+                    in
+                    ( LoadedAll
                         { products = products
-                        , cart = Cart.empty
+                        , cart = emptyCart
+                        }
+                    , cmd
+                    )
+
+        CartLoaded cart ->
+            case model of
+                Loading ->
+                    ( model, Cmd.none )
+
+                LoadedProducts products ->
+                    ( LoadedAll
+                        { products = products
+                        , cart = cart
                         }
                     , Cmd.none
                     )
+
+                LoadedAll _ ->
+                    ( model, Cmd.none )
+
+                Purchased _ ->
+                    ( model, Cmd.none )
+
+        CartLoadingFailed ->
+            case model of
+                Loading ->
+                    ( model, Cmd.none )
+
+                LoadedProducts products ->
+                    let
+                        ( emptyCart, cmd ) =
+                            Cart.empty
+                    in
+                    ( LoadedAll
+                        { products = products
+                        , cart = emptyCart
+                        }
+                    , cmd
+                    )
+
+                LoadedAll _ ->
+                    ( model, Cmd.none )
+
+                Purchased _ ->
+                    ( model, Cmd.none )
+
+
+
+-- subscriptions
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    case model of
+        Loading ->
+            Sub.none
+
+        LoadedProducts products ->
+            Cart.loaded products CartLoaded CartLoadingFailed
+
+        LoadedAll _ ->
+            Sub.none
+
+        Purchased _ ->
+            Sub.none
 
 
 
@@ -114,9 +193,12 @@ view model =
     , body =
         case model of
             Loading ->
-                [ div [] [ text "Loading..." ] ]
+                [ div [] [ text "Loading products..." ] ]
 
-            Loaded session ->
+            LoadedProducts _ ->
+                [ div [] [ text "Loading cart..." ] ]
+
+            LoadedAll session ->
                 [ div
                     [ class "banner" ]
                     [ h1
@@ -159,5 +241,5 @@ main =
         { init = init
         , view = view
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         }

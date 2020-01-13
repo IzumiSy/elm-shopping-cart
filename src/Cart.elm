@@ -1,7 +1,9 @@
-module Cart exposing
+port module Cart exposing
     ( Cart
     , add
     , empty
+    , load
+    , loaded
     , view
     )
 
@@ -11,6 +13,9 @@ module Cart exposing
 import Html exposing (Html, button, div, h2, span, text)
 import Html.Attributes exposing (class, disabled)
 import Html.Events exposing (onClick)
+import Json.Decode as Decode
+import Json.Decode.Pipeline as Pipeline
+import Json.Encode as Encode
 import Products
 import Set
 
@@ -33,18 +38,22 @@ type Cart
         }
 
 
-empty : Cart
+empty : ( Cart, Cmd msg )
 empty =
-    Cart
+    ( Cart
         { productIds = Set.empty
         , shipping = 0
         , taxes = 0
         , subTotal = 0
         , total = 0
         }
+    , Set.empty
+        |> encode
+        |> persistOnLocalStorage
+    )
 
 
-add : String -> Products.Products -> Cart -> Cart
+add : String -> Products.Products -> Cart -> ( Cart, Cmd msg )
 add productId products (Cart cart) =
     let
         nextProductIds =
@@ -59,13 +68,33 @@ add productId products (Cart cart) =
         subTotal_ =
             subTotal products nextProductIds
     in
-    Cart
+    ( Cart
         { productIds = nextProductIds
         , shipping = shipping
         , taxes = taxes
         , subTotal = subTotal_
         , total = subTotal_ + shipping + taxes
         }
+    , nextProductIds
+        |> encode
+        |> persistOnLocalStorage
+    )
+
+
+loaded : Products.Products -> (Cart -> msg) -> msg -> Sub msg
+loaded products onLoaded onFailed =
+    loadedOnLocalStorage
+        (\value ->
+            value
+                |> Decode.decodeValue (decode products)
+                |> Result.map onLoaded
+                |> Result.withDefault onFailed
+        )
+
+
+load : Cmd msg
+load =
+    loadOnLocalStorage ()
 
 
 
@@ -134,7 +163,31 @@ view onPurchaseMsg products (Cart cart) =
 
 
 
+-- ports
+
+
+port persistOnLocalStorage : Encode.Value -> Cmd msg
+
+
+port loadOnLocalStorage : () -> Cmd msg
+
+
+port loadedOnLocalStorage : (Encode.Value -> msg) -> Sub msg
+
+
+
 -- internals
+
+
+encode : ProductIds -> Encode.Value
+encode productIds =
+    Encode.list Encode.string (Set.toList productIds)
+
+
+decode : Products.Products -> Decode.Decoder Cart
+decode products =
+    Decode.succeed (List.foldl (\id cart -> Tuple.first (add id products cart)) (Tuple.first empty))
+        |> Pipeline.required "ids" (Decode.list Decode.string)
 
 
 {-| 現在選択されている商品一覧をdivのリストにする
