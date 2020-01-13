@@ -13,13 +13,16 @@ import Products
 -- model
 
 
+type alias Session =
+    { products : Products.Products
+    , cart : Cart.Cart
+    }
+
+
 type Model
     = Loading
-    | Loaded
-        { products : Products.Products
-        , cart : Cart.Cart
-        }
-    | Purchased
+    | Loaded Session
+    | Purchased Session
 
 
 init : () -> ( Model, Cmd Msg )
@@ -38,7 +41,7 @@ type Msg
     | BackToProducts
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
         ProductFetched products ->
@@ -54,7 +57,7 @@ update msg model =
                 Loaded _ ->
                     ( model, Cmd.none )
 
-                Purchased ->
+                Purchased _ ->
                     ( model, Cmd.none )
 
         AddProductToCart id ->
@@ -62,12 +65,15 @@ update msg model =
                 Loading ->
                     ( model, Cmd.none )
 
-                Loaded loaded ->
-                    ( Loaded { loaded | cart = Cart.add id loaded.products loaded.cart }
+                Loaded session ->
+                    ( Loaded
+                        { session
+                            | cart = Cart.add id session.products session.cart
+                        }
                     , Cmd.none
                     )
 
-                Purchased ->
+                Purchased _ ->
                     ( model, Cmd.none )
 
         Purchase ->
@@ -75,14 +81,27 @@ update msg model =
                 Loading ->
                     ( model, Cmd.none )
 
-                Loaded _ ->
-                    ( Purchased, Cmd.none )
+                Loaded session ->
+                    ( Purchased session, Cmd.none )
 
-                Purchased ->
+                Purchased _ ->
                     ( model, Cmd.none )
 
         BackToProducts ->
-            init ()
+            case model of
+                Loading ->
+                    ( model, Cmd.none )
+
+                Loaded _ ->
+                    ( model, Cmd.none )
+
+                Purchased { products } ->
+                    ( Loaded
+                        { products = products
+                        , cart = Cart.empty
+                        }
+                    , Cmd.none
+                    )
 
 
 
@@ -97,7 +116,7 @@ view model =
             Loading ->
                 [ div [] [ text "Loading..." ] ]
 
-            Loaded loaded ->
+            Loaded session ->
                 [ div
                     [ class "banner" ]
                     [ h1
@@ -106,12 +125,12 @@ view model =
                     ]
                 , div
                     [ class "contents" ]
-                    [ Products.view AddProductToCart loaded.products
-                    , Cart.view Purchase loaded.products loaded.cart
+                    [ Products.view AddProductToCart session.products
+                    , Cart.view Purchase session.products session.cart
                     ]
                 ]
 
-            Purchased ->
+            Purchased _ ->
                 [ div
                     [ class "contents purchased" ]
                     [ div
