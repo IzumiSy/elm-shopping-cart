@@ -193,10 +193,10 @@ view model =
     , body =
         case model of
             Loading ->
-                [ div [] [ text "Loading..." ] ]
+                [ div [] [ text "Loading products..." ] ]
 
             LoadedProducts _ ->
-                [ div [] [ text "Loading..." ] ]
+                [ div [] [ text "Loading cart..." ] ]
 
             LoadedAll session ->
                 [ div
