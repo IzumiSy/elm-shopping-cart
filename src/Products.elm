@@ -57,14 +57,14 @@ fetch msg =
 
 
 view : (String -> msg) -> Products -> Html msg
-view onAddMsg (Products products) =
+view onAddToCart (Products products) =
     div
         [ class "section products" ]
-        (List.map (viewProduct onAddMsg) products)
+        (List.map (viewProduct onAddToCart) products)
 
 
 viewProduct : (String -> msg) -> Product -> Html msg
-viewProduct onAddMsg { name, id, imageUrl, price } =
+viewProduct onAddToCart { name, id, imageUrl, price } =
     div
         [ class "product" ]
         [ div
@@ -87,7 +87,7 @@ viewProduct onAddMsg { name, id, imageUrl, price } =
             [ class "actions" ]
             [ button
                 [ class "add"
-                , onClick (onAddMsg id)
+                , onClick (onAddToCart id)
                 ]
                 [ text "追加" ]
             ]

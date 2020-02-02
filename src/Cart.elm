@@ -82,13 +82,13 @@ add productId products (Cart cart) =
 
 
 loaded : Products.Products -> (Cart -> msg) -> msg -> Sub msg
-loaded products onLoaded onFailed =
+loaded products onLoaded onLoadingFailed =
     loadedOnLocalStorage
         (\value ->
             value
                 |> Decode.decodeValue (decode products)
                 |> Result.map onLoaded
-                |> Result.withDefault onFailed
+                |> Result.withDefault onLoadingFailed
         )
 
 
